@@ -1,5 +1,5 @@
 <template lang="html">
-  <tr v-on:click="selectTx()" v-bind:style="{'background-color': selected ? 'lightblue': ''}">
+  <tr v-if="!filter.length || (item.txId.toLowerCase().includes(filter.toLowerCase()) || item.from.toLowerCase().includes(filter.toLowerCase()))" v-on:click="selectTx()" v-bind:style="{'background-color': selected ? 'lightblue': ''}">
     <td>{{ item.from }}</td>
     <td>{{ item.to }}</td>
     <td>{{ item.pending }}</td>
@@ -16,6 +16,10 @@ export default {
     item: {
       type: Object,
       default: function () { return {} }
+    },
+    filter: {
+      type: String,
+      default: ''
     }
   },
   methods: {

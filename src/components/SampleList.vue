@@ -1,6 +1,7 @@
 <template>
   <div class="list-container">
     <button type="button" name="button" v-on:click="checkSelectedTxs()">Check selected txs</button>
+    <input type="text" v-model="textSearch">
     <table>
       <thead>
         <tr>
@@ -10,7 +11,7 @@
         </tr>
       </thead>
       <tbody>
-        <SampleListItem v-for="item in items" :item="item" ref="listItem"/>
+        <SampleListItem v-for="item in items" :item="item" ref="listItem" :filter="textSearch"/>
       </tbody>
     </table>
   </div>
@@ -22,7 +23,8 @@ export default {
   name: 'SampleList',
   components: { SampleListItem },
   data: () => ({
-    selectedTxs: []
+    selectedTxs: [],
+    textSearch: ''
   }),
   props: {
     items: {
@@ -50,6 +52,5 @@ export default {
     width: 90%;
     margin: 0 auto;
   }
-
 
 </style>
