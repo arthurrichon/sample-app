@@ -1,17 +1,19 @@
 <template>
   <div class="list-container">
-    <button type="button" name="button" v-on:click="checkSelectedTxs()">Check selected txs</button>
-    <input type="text" v-model="textSearch">
+    <h1>{{ counterMessage }}</h1>
     <table>
       <thead>
         <tr>
-          <th>From</th>
-          <th>To</th>
-          <th>Pending</th>
+          <th v-for="col in columns">{{ col }}</th>
         </tr>
       </thead>
       <tbody>
-        <SampleListItem v-for="item in items" :item="item" ref="listItem" :filter="textSearch"/>
+        <SampleListItem
+          v-for="item in items"
+          :item="item"
+          :columns="columns"
+          @tfSelected="manageCounter"
+          ref="listItem" />
       </tbody>
     </table>
   </div>
@@ -19,12 +21,13 @@
 
 <script>
 import SampleListItem from './SampleListItem'
+
 export default {
   name: 'SampleList',
   components: { SampleListItem },
   data: () => ({
-    selectedTxs: [],
-    textSearch: ''
+    count: 0,
+    columns: ['from', 'to', 'pending']
   }),
   props: {
     items: {
@@ -33,14 +36,13 @@ export default {
     }
   },
   methods: {
-    checkSelectedTxs () {
-      this.selectedTxs = []
-      for (var i = 0; i < this.$refs.listItem.length; i++) {
-        if (this.$refs.listItem[i].selected) {
-          this.selectedTxs.push(this.$refs.listItem[i].$props.item)
-        }
-      }
-      console.log(this.selectedTxs)
+    manageCounter (isSelected) {
+      isSelected ? this.count++ : this.count--
+    }
+  },
+  computed: {
+    counterMessage: function () {
+      return this.count > 0 ? `Mon beau compteur ${this.count}` : ''
     }
   }
 }

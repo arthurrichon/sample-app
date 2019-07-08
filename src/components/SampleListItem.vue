@@ -1,8 +1,8 @@
 <template lang="html">
-  <tr v-if="!filter.length || (item.txId.toLowerCase().includes(filter.toLowerCase()) || item.from.toLowerCase().includes(filter.toLowerCase()))" v-on:click="selectTx()" v-bind:style="{'background-color': selected ? 'lightblue': ''}">
-    <td>{{ item.from }}</td>
-    <td>{{ item.to }}</td>
-    <td>{{ item.pending }}</td>
+  <tr
+    :style="{'background-color': selected ? 'lightblue': ''}"
+    @click="emitClickEvent()">
+    <td v-for="column in columns">{{ item[column] }}</td>
   </tr>
 </template>
 
@@ -17,14 +17,15 @@ export default {
       type: Object,
       default: function () { return {} }
     },
-    filter: {
-      type: String,
-      default: ''
+    columns: {
+      type: Array,
+      default: function () { return [] }
     }
   },
   methods: {
-    selectTx () {
+    emitClickEvent () {
       this.selected = !this.selected
+      this.$emit('tfSelected', this.selected)
     }
   }
 }
@@ -38,3 +39,8 @@ table tbody tr:nth-child(2n+1) {
   background-color: #DDD;
 }
 </style>
+<!-- <tr v-on:click="selectTx()" v-bind:style="{'background-color': selected ? 'lightblue': ''}">
+  <td>{{ item.from }}</td>
+  <td>{{ item.to }}</td>
+  <td>{{ item.pending }}</td>
+</tr> -->
